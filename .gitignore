@@ -161,3 +161,6 @@ cython_debug/
 
 # Chroma related local DB:
 docs/chroma/**
+
+# Ignore idea-specific configs:
+.idea/**
