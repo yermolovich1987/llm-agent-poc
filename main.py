@@ -26,20 +26,20 @@ PDF_FOLDER_PATH = 'dataset/pdf_price_cz'
 
 
 def main():
-    render_main_page()
+    # render_main_page()
 
-    # pdf_docs = load_pdf_documents()
-    # print(f"$$$   Loaded pages: {pdf_docs}")
+    pdf_docs = load_pdf_documents()
+    print(f"$$$   Loaded pages: {pdf_docs}")
 
 
-# def load_pdf_documents():
-#     documents = []
-#     for file in os.listdir(PDF_FOLDER_PATH):
-#         if file.endswith('.pdf'):
-#             pdf_path = os.path.join(PDF_FOLDER_PATH, file)
-#             loader = PyPDFLoader(pdf_path)
-#             documents.extend(loader.load_and_split())
-#     return documents
+def load_pdf_documents():
+    documents = []
+    for file in os.listdir(PDF_FOLDER_PATH):
+        if file.endswith('.pdf'):
+            pdf_path = os.path.join(PDF_FOLDER_PATH, file)
+            loader = PyPDFLoader(pdf_path)
+            documents.extend(loader.load_and_split())
+    return documents
 
 
 def render_main_page():
