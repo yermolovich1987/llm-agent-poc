@@ -160,7 +160,9 @@ cython_debug/
 #.idea/
 
 # Chroma related local DB:
-docs/chroma/**
+docs/**
+# Excluded temporarily dataset folder
+dataset/**
 
 # Ignore idea-specific configs:
 .idea/**
