@@ -18,7 +18,8 @@ from langchain_community.vectorstores import Chroma
 import tempfile
 
 # PERSIST_DIRECTORY = 'docs/chroma/'
-PERSIST_DIRECTORY = 'docs/chroma_cars/'
+# PERSIST_DIRECTORY = 'docs/chroma_cars/'
+PERSIST_DIRECTORY = 'docs/chroma_cars_new/'
 RETRIEVED_DOCUMENTS_COUNT = 5
 MODEL_NAME = 'gpt-3.5-turbo'
 
@@ -26,10 +27,12 @@ PDF_FOLDER_PATH = 'dataset/pdf_price_cz'
 
 
 def main():
-    # render_main_page()
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-    pdf_docs = load_pdf_documents()
-    print(f"$$$   Loaded pages: {pdf_docs}")
+    render_main_page()
+
+    # pdf_docs = load_pdf_documents()
+    # print(f"$$$   Loaded pages: {pdf_docs}")
 
 
 def load_pdf_documents():
@@ -49,6 +52,14 @@ def load_pdf_documents():
 # This method is used to extract file name since it should represent the model name
 def extract_file_name(file):
     file_name = os.path.basename(file)
+    file_parts = os.path.splitext(file_name)
+    print(file_parts)  # returns tuple of string
+    return file_parts[0]
+
+
+# This method is used to extract file name since it should represent the model name
+def extract_file_name_from_uploaded_file(file):
+    file_name = file.name
     file_parts = os.path.splitext(file_name)
     print(file_parts)  # returns tuple of string
     return file_parts[0]
@@ -79,9 +90,11 @@ def render_main_page():
 
         # loader = construct_loader(tmp_file_path)
         loader = PyPDFLoader(tmp_file_path)
+        car_model_name = extract_file_name_from_uploaded_file(uploaded_file)
 
         with st.spinner("Loading file with products..."):
             data = loader.load()
+            attach_model_name_as_metadata(data, car_model_name)
             st.write(data)
             vectordb.add_documents(data)
 
