@@ -36,10 +36,27 @@ def load_pdf_documents():
     documents = []
     for file in os.listdir(PDF_FOLDER_PATH):
         if file.endswith('.pdf'):
+            model_name = extract_file_name(file)
+
             pdf_path = os.path.join(PDF_FOLDER_PATH, file)
             loader = PyPDFLoader(pdf_path)
-            documents.extend(loader.load_and_split())
+            docs = loader.load()
+            attach_model_name_as_metadata(docs, model_name)
+            documents.extend(docs)
     return documents
+
+
+# This method is used to extract file name since it should represent the model name
+def extract_file_name(file):
+    file_name = os.path.basename(file)
+    file_parts = os.path.splitext(file_name)
+    print(file_parts)  # returns tuple of string
+    return file_parts[0]
+
+
+def attach_model_name_as_metadata(docs, model_name):
+    for doc in docs:
+        doc.metadata['model'] = model_name
 
 
 def render_main_page():
